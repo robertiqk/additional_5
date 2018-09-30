@@ -16,6 +16,11 @@ module.exports = function check(str, bracketsConfig) {
   for (let i = 0; i < strToArray.length; i++) {
      openIndex = openBrackets.indexOf(strToArray[i]);
      if (openIndex !== -1 ) {
+         if(stackOfIndexes[stackOfIndexes.length - 1] == openIndex 
+          && openBrackets[openIndex] == closeBrackets[openIndex]) {
+            stackOfIndexes.pop();
+            continue;
+         }
          stackOfIndexes.push(openIndex);
          continue;
      }
@@ -41,7 +46,6 @@ module.exports = function check(str, bracketsConfig) {
   if (stackOfIndexes.length !== 0) {
       return false;
   }
-
   return true;
 }
 
