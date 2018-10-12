@@ -1,23 +1,23 @@
 module.exports = function check(str, bracketsConfig) {
-  // your solution
-  if(str.length % 2 !==0) return false;
-  let strToArray = str.split('');
-  let stackOfIndexes = [];
-  let openBrackets = [];
-  let closeBrackets = [];
-  let closeIndex;
-  let openIndex;
 
-  for(let i = 0;  i < bracketsConfig.length; i++) {
+  let strToArray = str.split('');
+  const stackOfIndexes = [];
+  const openBrackets = [];
+  const closeBrackets = [];
+  let closeIndex = 0;
+  let openIndex = 0;
+
+  for(let i = 0, length = bracketsConfig.length;  i < length; i++) {
     openBrackets.push(bracketsConfig[i][0]);
     closeBrackets.push(bracketsConfig[i][1]);
   }
 
-  for (let i = 0; i < strToArray.length; i++) {
+  for (let i = 0, length = strToArray.length; i < length; i++) {
      openIndex = openBrackets.indexOf(strToArray[i]);
-     if (openIndex !== -1 ) {
-         if(stackOfIndexes[stackOfIndexes.length - 1] == openIndex 
-          && openBrackets[openIndex] == closeBrackets[openIndex]) {
+     
+     if (!!(~openIndex)) {
+         if(stackOfIndexes[stackOfIndexes.length - 1] === openIndex 
+          && openBrackets[openIndex] === closeBrackets[openIndex]) {
             stackOfIndexes.pop();
             continue;
          }
@@ -26,7 +26,8 @@ module.exports = function check(str, bracketsConfig) {
      }
 
      closeIndex = closeBrackets.indexOf(strToArray[i]);
-     if (closeIndex !== -1) {
+
+     if (!!(~closeIndex)) {
          openIndex = stackOfIndexes.pop();
          if (closeIndex !== openIndex) {
              return false;
@@ -34,18 +35,19 @@ module.exports = function check(str, bracketsConfig) {
      }
   }
 
-  if (stackOfIndexes.length % 2 == 0 && stackOfIndexes.length !== 0 ) {
-    for (let i = 0; i < stackOfIndexes.length; i += 2) {
-      if(stackOfIndexes[i] !== stackOfIndexes[i+1]) {
-        return false;
-      }
-    }
-    return true;
-  }
-
-  if (stackOfIndexes.length !== 0) {
-      return false;
-  }
-  return true;
+  return stackOfIndexes.length === 0;
 }
 
+/*
+  let tempStr = str;
+
+  for(let strKey = tempStr.length; strKey >= 0; strKey--) {
+    for(let bracketKey = 0; bracketKey < bracketsConfig.length; bracketKey++) {
+      if(tempStr[strKey] === bracketsConfig[bracketKey][0]) {
+        tempStr = tempStr.replace(bracketsConfig[bracketKey].join(''), '');
+      }
+    }
+  }
+
+  return tempStr === '';
+*/
